@@ -1,39 +1,18 @@
 const form = document.querySelector("#signupForm")
-const emailInput = document.querySelector("#email"),
-nameInput = document.querySelector("#name"),
-passwordInput = document.querySelector("#password"),
-profileInput = document.querySelector("#profile")
 
+async function handleSubmit(event) {
+  event.preventDefault();
+  const data = new FormData(event.target);
+  const value = Object.fromEntries(data.entries());
 
-function signupOnSubmit(){
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-
-    const emailValue = emailInput.value,
-    nameValue = nameInput.value,
-    passwordValue = passwordInput.value,
-    profileValue = profileInput.value
-
-    let res = await fetch(`http://localhost:5000/sign-up`,{
-      method: 'post',
-      body : JSON.stringify({
-        email : emailValue,
-        name : nameValue,
-        password : passwordValue,
-        profile : profileValue
-      }),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    })
-    console.log(res.json())
+  let res = await fetch(`http://localhost:5000/sign-up`,{
+    method: 'post',
+    body : JSON.stringify(value),
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  })
+  console.log(res.json())
   }
-  
-}
 
-
-function init(){
-  signupOnSubmit();
-}
-
-init();
+form.addEventListener('submit', handleSubmit);
